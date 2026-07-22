@@ -507,13 +507,6 @@
     color: var(--rose);
     border: 2px solid var(--pink);
   }
-  .gate-hint{
-    margin-top: 22px;
-    font-family: 'Homemade Apple', cursive;
-    font-size: 0.95rem;
-    color: var(--text);
-    opacity: 0.6;
-  }
   .gate-inner{
     position: relative;
     z-index: 1;
@@ -539,24 +532,24 @@
     display: block;
   }
   /* top row */
-  .gate-photo.p1{ top: 2%;  left: 1%;  width: 200px; transform: rotate(-9deg); }
-  .gate-photo.p2{ top: 3%;  left: 22%; width: 160px; transform: rotate(6deg); }
-  .gate-photo.p3{ top: 2%;  right: 21%; width: 160px; transform: rotate(-5deg); }
-  .gate-photo.p4{ top: 2%;  right: 1%;  width: 200px; transform: rotate(8deg); }
+  .gate-photo.p1{ top: 1%;  left: 0.5%;  width: 240px; transform: rotate(-9deg); }
+  .gate-photo.p2{ top: 2%;  left: 19%; width: 190px; transform: rotate(6deg); }
+  .gate-photo.p3{ top: 1%;  right: 18%; width: 190px; transform: rotate(-5deg); }
+  .gate-photo.p4{ top: 1%;  right: 0.5%;  width: 240px; transform: rotate(8deg); }
   /* middle edges */
-  .gate-photo.p5{ top: 42%; left: 0.5%;  width: 145px; transform: rotate(-4deg); }
-  .gate-photo.p6{ top: 42%; right: 0.5%; width: 145px; transform: rotate(5deg); }
+  .gate-photo.p5{ top: 40%; left: 0.2%;  width: 170px; transform: rotate(-4deg); }
+  .gate-photo.p6{ top: 40%; right: 0.2%; width: 170px; transform: rotate(5deg); }
   /* bottom row */
-  .gate-photo.p7{ bottom: 3%; left: 1%;  width: 200px; transform: rotate(6deg); }
-  .gate-photo.p8{ bottom: 2%; left: 23%; width: 160px; transform: rotate(-5deg); }
-  .gate-photo.p9{ bottom: 3%; right: 22%; width: 160px; transform: rotate(4deg); }
-  .gate-photo.p10{ bottom: 2%; right: 1%; width: 200px; transform: rotate(-7deg); }
+  .gate-photo.p7{ bottom: 1%; left: 0.5%;  width: 240px; transform: rotate(6deg); }
+  .gate-photo.p8{ bottom: 1%; left: 20%; width: 190px; transform: rotate(-5deg); }
+  .gate-photo.p9{ bottom: 1%; right: 19%; width: 190px; transform: rotate(4deg); }
+  .gate-photo.p10{ bottom: 1%; right: 0.5%; width: 240px; transform: rotate(-7deg); }
   @media (max-width: 760px){
     .gate-photo{ padding: 6px 6px 16px; }
-    .gate-photo.p1{ width: 140px; top: 2%; left: 2%; }
-    .gate-photo.p4{ width: 140px; top: 2%; right: 2%; }
-    .gate-photo.p7{ width: 140px; bottom: 3%; left: 2%; }
-    .gate-photo.p10{ width: 140px; bottom: 3%; right: 2%; }
+    .gate-photo.p1{ width: 165px; top: 2%; left: 2%; }
+    .gate-photo.p4{ width: 165px; top: 2%; right: 2%; }
+    .gate-photo.p7{ width: 165px; bottom: 3%; left: 2%; }
+    .gate-photo.p10{ width: 165px; bottom: 3%; right: 2%; }
     .gate-photo.p2, .gate-photo.p3, .gate-photo.p5, .gate-photo.p6, .gate-photo.p8, .gate-photo.p9{
       display: none;
     }
@@ -760,26 +753,6 @@
   }
   .love-close:hover{ opacity: 1; }
 
-  /* ---- Music toggle ---- */
-  #music-toggle{
-    position: fixed;
-    bottom: 18px;
-    right: 18px;
-    z-index: 500;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 2px solid var(--pink);
-    background: var(--paper);
-    color: var(--rose);
-    font-size: 1.15rem;
-    cursor: pointer;
-    box-shadow: 0 6px 14px rgba(201,24,74,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   /* ---- Personalised loading screen ---- */
   #loading-screen{
     position: fixed;
@@ -859,7 +832,6 @@
       <button id="gate-yes" class="gate-btn yes">Yes</button>
       <button id="gate-no" class="gate-btn no">No</button>
     </div>
-    <div class="gate-hint">(there's only one right answer)</div>
   </div>
 </div>
 
@@ -902,8 +874,8 @@
 <div class="section-title">our stats</div>
 <div class="stats-wrap">
   <div class="stat-card">
-    <div class="stat-number" id="stat-places">0</div>
-    <div class="stat-label">places we've been together</div>
+    <div class="stat-number" id="stat-places">27+</div>
+    <div class="stat-label">unique restos visited</div>
   </div>
 </div>
 
@@ -921,21 +893,11 @@
   <div class="love-card">
     <button class="love-close" id="love-close" aria-label="close">×</button>
     <h2 class="love-title">a little something</h2>
-    <p class="love-text" id="love-text">[[REPLACE WITH YOUR REAL LOVE LETTER]]
+    <p class="love-text" id="love-text">Hey Mischa, as of today we've been together for 4 months now, does that mean I can fart without getting up now? Anyways baby, thank you for being mine. I don't think I could ask for a better girlfriend, so thank you for the meals, the dates, the care, picking me up from the airport, and every little thing you do for me. This is also the last month I'm going to be staying at UniLodge, so I'm gonna miss being able to see you so easily, but at least I'm not moving too far, so best believe I'm still finding every excuse to come over and see my beautiful girlfriend.
 
-My Mischiboop,
-
-Four months in and I still can't believe you said "sure." I'd write it all out here — every reason, every little thing — but for now just know that finding you was the best thing that's happened to me all year. Here's to every first still ahead of us.
-
-Yours always.</p>
+I love you Mischiboop. Happy anniversary.</p>
   </div>
 </div>
-
-<!-- Background music — replace "song.mp3" with your actual song file -->
-<audio id="bg-music" loop>
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
-<button id="music-toggle" aria-label="mute music">🔊</button>
 
 <script>
   // ---------------------------------------------------------
@@ -967,9 +929,9 @@ Yours always.</p>
       title: "First Date",
       date: "February 12, 2026",
       place: "Giuls, Surry Hills",
-      story: "Replace with how the date at Giuls went — pasta, a train ride, and a Ratatouille photobooth strip to prove it happened.",
+      story: "Idk if you count this as our first date but i think our first date was at Giuls. I tried to make a move on my crush by asking her out for dinner at Brazeiro Churrascaria, I mean who would've known that spot's Brazilian. Turns out the gnocchi place Mischiboop mentioned was Giuls. After eating we bumped into Kiyara and Sophie, what an interesting surprise, sorry for winning rock paper scissors. Ps thanks for keeping me company when I couldn't get an o-week party ticket.",
       locations: [{ lat: -33.8890, lng: 151.2131, label: "Giuls, Surry Hills" }],
-      placeholder: true
+      placeholder: false
     },
     {
       emoji: "💭",
@@ -978,7 +940,7 @@ Yours always.</p>
       title: "Asked You Out",
       date: "March 23, 2026",
       place: "Totti's, Bondi",
-      story: "Asked Mischiboop to go out with me to do the Bondi to Coogee walk — she said yes, and she didn't bring another guy so you know that's a win. From there we made up fake arguments (mainly about my step sister entertaining countless people), and most importantly, Mischa said yes to being my girlfriend. Or, well, \"sure\" — but it's the same thing right? The date being the same as ur opps doesn't matter anymore cuz they broke up too.",
+      story: "Asked Mischiboop to go out with me to do the Bondi to Coogee walk, she said yes, and she didn't bring another guy so you know that's a win. From there we made up fake arguments (mainly about my step sister entertaining countless people), and most importantly, Mischa said yes to being my girlfriend. Or, well, \"sure\", but it's the same thing right? The date being the same as ur opps doesn't matter anymore cuz they broke up too.",
       locations: [{ lat: -33.8948293, lng: 151.268861, label: "Totti's, Bondi" }],
       placeholder: false
     },
@@ -989,9 +951,9 @@ Yours always.</p>
       title: "First Kiss",
       date: "April 4, 2026",
       place: "Darling Harbour",
-      story: "Replace with the story — kissed during the fireworks at Darling Harbour.",
+      story: "Someone really cool and pretty had a great date idea: we would go to Paddy's Market and dress each other. I picked a very cute outfit for my beautiful gf, but Mischiboop on the other hand went over budget and made me wear a mini labubu crop top despite the fact that she doesn't even like labubus. Afterwards we went geocaching in our outfits and saw fireworks. Thing is, while there were fireworks, the only thing I was thinking about was the fireworks going off in my chest, that I wanted to kiss my baby.",
       locations: [{ lat: -33.8688, lng: 151.2010, label: "Darling Harbour" }],
-      placeholder: true
+      placeholder: false
     },
     {
       emoji: "🌙",
@@ -999,13 +961,14 @@ Yours always.</p>
       photos: ["one-month-1.jpg", "one-month-2.jpg", "one-month-3.jpg"],
       title: "1 Month",
       date: "April 23, 2026",
-      place: "Sydney Tower Eye & Green Point Reserve",
-      story: "Replace with how the first month felt and what you did to mark it.",
+      place: "Sydney Tower Eye, Green Point Reserve & Shelly Beach",
+      story: "We had a friendly competition to see who could plan the better one month anniversary date. I started my date off pretending I didn't have everything planned and surprising with a car. From here we had a nice picnic before rain interrupted us, crepes, and some very windy plane spotting. Mischiboop took me to a buffet where we overindulged and finished up going to a photo booth and kissing under the stars at Shelly Beach in Manly. Due to Mischa's date having more food and the fact that it was planned by someone that cool, I'd say she wins.",
       locations: [
         { lat: -33.8701, lng: 151.2087, label: "Sydney Tower Eye" },
-        { lat: -33.8434, lng: 151.2797, label: "Green Point Reserve" }
+        { lat: -33.8434, lng: 151.2797, label: "Green Point Reserve" },
+        { lat: -33.8003, lng: 151.2920, label: "Shelly Beach, Manly" }
       ],
-      placeholder: true
+      placeholder: false
     },
     {
       emoji: "🌸",
@@ -1013,13 +976,13 @@ Yours always.</p>
       photos: ["two-months-1.jpg"],
       title: "2 Months",
       date: "May 23, 2026",
-      place: "Melbourne & Jakarta",
-      story: "Replace with a favorite memory from month two — spent apart, one of you in Melbourne and one in Jakarta.",
+      place: "Sydney & Jakarta",
+      story: "Someone was very far away from me, almost as if they were trying to run away. Mischiboop was hiding out in Jakarta whilst I was in Sydney, so we had to celebrate online. When Mischa came back from Indo she did have a very cool gift for me though, an I ❤️ Cougars shirt. That's tough as hell.",
       locations: [
-        { lat: -37.8136, lng: 144.9631, label: "Melbourne" },
+        { lat: -33.8688, lng: 151.2093, label: "Sydney" },
         { lat: -6.2088, lng: 106.8456, label: "Jakarta" }
       ],
-      placeholder: true
+      placeholder: false
     },
     {
       emoji: "⛳",
@@ -1028,9 +991,9 @@ Yours always.</p>
       title: "3 Months",
       date: "June 23, 2026",
       place: "Epicurean, Crown Sydney",
-      story: "Replace with a favorite memory from month three — buffet at Epicurean, then mini golf.",
+      story: "I copied Mischa's idea a little bit and made a brochure so that she could guess where we would be going. We ran it back at the buffet, and to keep to tradition we skipped the art gallery. Somehow Mischa beat me in mini golf, but I mean how could she not, she beats me irl too. Fun fact to note about this day is that we both puked from the buffet.",
       locations: [{ lat: -33.8611, lng: 151.1998, label: "Epicurean, Crown Sydney" }],
-      placeholder: true
+      placeholder: false
     },
     {
       emoji: "🎉",
@@ -1038,7 +1001,7 @@ Yours always.</p>
       title: "4 Months",
       date: "July 23, 2026",
       place: "UniLodge Kensington",
-      story: "And here we are — four months in. Here's to celebrating tonight!",
+      story: "We're writting this together.",
       locations: [{ lat: -33.9143, lng: 151.2257, label: "UniLodge Kensington" }],
       placeholder: true
     }
@@ -1087,11 +1050,6 @@ Yours always.</p>
     timelineEl.appendChild(div);
     items.push(div);
   });
-
-  // ---- Our Stats: count unique locations across every milestone ----
-  const uniquePlaceLabels = new Set();
-  firsts.forEach(f => f.locations.forEach(loc => uniquePlaceLabels.add(loc.label)));
-  document.getElementById('stat-places').textContent = uniquePlaceLabels.size;
 
   // ---- Photo lightbox: click any timeline photo to view it full-screen ----
   (function(){
@@ -1205,9 +1163,6 @@ Yours always.</p>
       if (value === correctPassword){
         pwgate.classList.add('gate-hidden');
         setTimeout(() => { pwgate.style.display = 'none'; }, 500);
-        // Start the background music right on this click (a real user
-        // gesture), so browsers allow the autoplay.
-        startMusic();
       } else {
         error.textContent = "nope, try again 💔";
         input.classList.remove('shake');
@@ -1328,31 +1283,6 @@ Yours always.</p>
     tick();
     setInterval(tick, 1000);
   })();
-
-  // ---- Background music ----
-  // EDIT ME: replace "song.mp3" (in the <audio> tag above) with your own song file.
-  const bgMusic = document.getElementById('bg-music');
-  const musicToggle = document.getElementById('music-toggle');
-  let musicMuted = false;
-
-  function startMusic(){
-    bgMusic.volume = 0.5;
-    const playPromise = bgMusic.play();
-    if (playPromise !== undefined){
-      playPromise.catch(() => {
-        // Autoplay was blocked — user can still hit the music button to start it.
-      });
-    }
-  }
-
-  musicToggle.addEventListener('click', () => {
-    musicMuted = !musicMuted;
-    bgMusic.muted = musicMuted;
-    if (!musicMuted && bgMusic.paused){
-      startMusic();
-    }
-    musicToggle.textContent = musicMuted ? '🔇' : '🔊';
-  });
 
   // ---- Hidden love letter ----
   (function(){
