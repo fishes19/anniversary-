@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Firsts 💕</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@600;700&family=Homemade+Apple&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-light:#ffe4ec;
+    --pink:#ffc2d1;
+    --pink-deep:#ff8fab;
+    --rose:#c9184a;
+    --gold:#d4a659;
+    --cream:#fdf6ee;
+    --paper:#fffaf3;
+    --text:#4a3439;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Quicksand', sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,194,209,0.35), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(212,166,89,0.15), transparent 40%),
+      linear-gradient(180deg, #fff3f7 0%, #fdf6ee 35%, #fff3f7 100%);
+    background-attachment: fixed;
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    opacity:0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    z-index: 0;
+  }
+
+  header{
+    text-align:center;
+    padding: 70px 20px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  header .kicker{
+    font-family:'Homemade Apple', cursive;
+    font-size:1.1rem;
+    color: var(--gold);
+    letter-spacing:0.05em;
+  }
+  header h1{
+    font-family:'Caveat', cursive;
+    font-size: 4.6rem;
+    color: var(--rose);
+    margin: 4px 0 6px;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.7);
+    transform: rotate(-1.5deg);
+  }
+  header p{
+    font-size: 1.05rem;
+    color: var(--text);
+    opacity:0.75;
+    margin:0;
+    font-style: italic;
+  }
+  header .divider{
+    width: 90px;
+    height: 2px;
+    background: var(--gold);
+    margin: 18px auto 0;
+    opacity:0.6;
+    position: relative;
+  }
+  header .divider::before{
+    content:"♥";
+    position:absolute;
+    left:50%; top:50%;
+    transform: translate(-50%,-50%);
+    background: var(--cream);
+    padding: 0 10px;
+    color: var(--rose);
+    font-size: 0.9rem;
+  }
+
+  .hearts{
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .hearts span{
+    position:absolute;
+    bottom:-40px;
+    font-size: 1.3rem;
+    color: var(--pink-deep);
+    opacity:0.45;
+    animation: floatUp 10s linear infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) rotate(0deg); opacity:0.5;}
+    100%{ transform: translateY(-550px) rotate(25deg); opacity:0;}
+  }
+
+  #map-wrap{
+    max-width: 1000px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+    position: relative;
+    z-index:1;
+  }
+  #map-caption{
+    text-align:center;
+    font-family:'Homemade Apple', cursive;
+    color: var(--rose);
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+  }
+  #map{
+    width: 100%;
+    height: 440px;
+    border-radius: 4px;
+    box-shadow: 0 14px 40px rgba(201,24,74,0.22), 0 0 0 10px #fff, 0 0 0 11px #e9d3b8;
+  }
+  .leaflet-popup-content-wrapper{
+    border-radius: 10px;
+    font-family:'Quicksand', sans-serif;
+  }
+  .leaflet-popup-content b{
+    font-family:'Playfair Display', serif;
+    color: var(--rose);
+  }
+
+  .section-title{
+    text-align:center;
+    font-family:'Caveat', cursive;
+    font-size: 2.4rem;
+    color: var(--rose);
+    margin: 10px 0 36px;
+  }
+
+  .timeline{
+    max-width: 820px;
+    margin: 0 auto 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index:1;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left: 24px;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: repeating-linear-gradient(180deg, var(--gold) 0 6px, transparent 6px 12px);
+    opacity:0.7;
+  }
+  @media (min-width: 720px){
+    .timeline::before{ left: 50%; margin-left:-1px; }
+  }
+
+  .item{
+    position: relative;
+    margin: 0 0 54px 62px;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+  }
+  .item:hover{ transform: translateY(-3px); }
+  .item.active .card{
+    box-shadow: 0 14px 30px rgba(201,24,74,0.28);
+    outline: 2px solid var(--gold);
+  }
+
+  .item::after{
+    content: attr(data-emoji);
+    position:absolute;
+    left: -62px;
+    top: 18px;
+    width: 44px;
+    height: 44px;
+    background: var(--paper);
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 10px rgba(201,24,74,0.25);
+    border: 3px solid var(--gold);
+    z-index: 2;
+  }
+
+  .card{
+    background: var(--paper);
+    border-radius: 3px;
+    padding: 20px 22px 22px;
+    box-shadow: 0 6px 16px rgba(120,60,70,0.14);
+    position: relative;
+    transform: rotate(-0.6deg);
+  }
+  .item:nth-child(even) .card{ transform: rotate(0.6deg); }
+  .card::before{
+    /* washi tape */
+    content:"";
+    position:absolute;
+    top:-12px;
+    left: 30px;
+    width: 70px;
+    height: 22px;
+    background: var(--pink);
+    opacity:0.7;
+    transform: rotate(-4deg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+
+  .polaroid{
+    width: 100%;
+    max-width: 220px;
+    background: #fff;
+    padding: 8px 8px 26px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    margin: 0 auto 14px;
+    transform: rotate(1.5deg);
+    position: relative;
+  }
+  .item:nth-child(even) .polaroid{ transform: rotate(-1.5deg); }
+  .polaroid .photo-area{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, var(--pink-light), var(--pink) 60%, var(--pink-deep));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+  .polaroid .photo-area img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .polaroid .photo-area.multi{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .polaroid .photo-area.multi img{ height: 100%; }
+
+  .polaroid-group{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .polaroid.small{
+    width: 46%;
+    max-width: 130px;
+    margin: 0;
+  }
+  .polaroid-group .polaroid.small:nth-child(odd){ transform: rotate(-4deg); }
+  .polaroid-group .polaroid.small:nth-child(even){ transform: rotate(4deg); }
+  .group-caption{
+    font-family:'Homemade Apple', cursive;
+    text-align:center;
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+  .polaroid .caption{
+    font-family:'Homemade Apple', cursive;
+    text-align:center;
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-top: 8px;
+  }
+
+  .item h2{
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    color: var(--rose);
+    margin: 0 0 4px;
+    font-size: 1.35rem;
+  }
+  .item .date{
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .item .place{
+    font-size: 0.88rem;
+    color: var(--text);
+    opacity: 0.75;
+    margin-bottom: 10px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .item p.story{
+    margin: 0;
+    line-height: 1.55;
+    font-size: 0.96rem;
+  }
+  .see-on-map{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top: 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rose);
+    background: var(--pink-light);
+    border: none;
+    border-radius: 20px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .see-on-map:hover{ background: var(--pink); transform: scale(1.04); }
+
+  .placeholder-tag{
+    display:inline-block;
+    margin-top:10px;
+    margin-left: 8px;
+    font-size:0.7rem;
+    color:#b3567a;
+    background:#ffe8f0;
+    padding:2px 8px;
+    border-radius:10px;
+    vertical-align: middle;
+  }
+
+  footer{
+    text-align:center;
+    padding: 30px 20px 70px;
+    font-family:'Caveat', cursive;
+    font-size: 1.7rem;
+    color: var(--rose);
+    position: relative;
+    z-index:1;
+  }
+  footer .sub{
+    font-family:'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text);
+    opacity:0.6;
+    margin-top: 4px;
+  }
+
+  /* ---- Password gate (shown before everything else) ---- */
+  #pwgate{
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,194,209,0.35), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(212,166,89,0.15), transparent 40%),
+      linear-gradient(180deg, #fff3f7 0%, #fdf6ee 35%, #fff3f7 100%);
+    transition: opacity 0.5s ease;
+  }
+  #pwgate.gate-hidden{
+    opacity: 0;
+    pointer-events: none;
+  }
+  .pwgate-inner{
+    text-align: center;
+    padding: 20px;
+    max-width: 90vw;
+  }
+  .pwgate-lock{
+    font-size: 2.4rem;
+    margin-bottom: 6px;
+  }
+  .pwgate-title{
+    font-family: 'Caveat', cursive;
+    font-size: 2.6rem;
+    color: var(--rose);
+    margin: 0 0 22px;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.7);
+    transform: rotate(-1deg);
+  }
+  .pwgate-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .pwgate-input{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 2px solid var(--pink);
+    background: var(--paper);
+    color: var(--text);
+    text-align: center;
+    width: 260px;
+    max-width: 100%;
+    outline: none;
+  }
+  .pwgate-input:focus{
+    border-color: var(--rose);
+  }
+  .pwgate-submit{
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 12px 32px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    background: var(--rose);
+    color: #fff;
+    box-shadow: 0 6px 14px rgba(201,24,74,0.22);
+  }
+  .pwgate-error{
+    margin-top: 14px;
+    min-height: 1.2em;
+    font-family: 'Homemade Apple', cursive;
+    font-size: 1.05rem;
+    color: var(--rose);
+  }
+  .pwgate-input.shake{
+    animation: pwshake 0.4s;
+    border-color: var(--rose);
+  }
+  @keyframes pwshake{
+    0%, 100%{ transform: translateX(0); }
+    20%{ transform: translateX(-8px); }
+    40%{ transform: translateX(8px); }
+    60%{ transform: translateX(-6px); }
+    80%{ transform: translateX(6px); }
+  }
+
+  /* ---- Gate / splash screen ---- */
+  #gate{
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,194,209,0.35), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(212,166,89,0.15), transparent 40%),
+      linear-gradient(180deg, #fff3f7 0%, #fdf6ee 35%, #fff3f7 100%);
+    transition: opacity 0.5s ease;
+  }
+  #gate.gate-hidden{
+    opacity: 0;
+    pointer-events: none;
+  }
+  .gate-inner{
+    text-align: center;
+    padding: 20px;
+  }
+  .gate-question{
+    font-family: 'Caveat', cursive;
+    font-size: 3rem;
+    color: var(--rose);
+    margin: 0 0 36px;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.7);
+    transform: rotate(-1deg);
+  }
+  .gate-buttons{
+    position: relative;
+    width: 340px;
+    max-width: 84vw;
+    height: 150px;
+    margin: 0 auto;
+  }
+  .gate-btn{
+    position: absolute;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 14px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(201,24,74,0.22);
+    transition: left 0.15s ease, top 0.15s ease;
+  }
+  .gate-btn.yes{
+    left: 10px;
+    top: 55px;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+  }
+  .gate-btn.no{
+    left: 190px;
+    top: 55px;
+    background: var(--paper);
+    color: var(--rose);
+    border: 2px solid var(--pink);
+  }
+  .gate-hint{
+    margin-top: 22px;
+    font-family: 'Homemade Apple', cursive;
+    font-size: 0.95rem;
+    color: var(--text);
+    opacity: 0.6;
+  }
+  .gate-inner{
+    position: relative;
+    z-index: 1;
+  }
+  .gate-scatter{
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .gate-photo{
+    position: absolute;
+    width: 150px;
+    background: #fff;
+    padding: 8px 8px 22px;
+    box-shadow: 0 10px 22px rgba(120,60,70,0.22);
+  }
+  .gate-photo img{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+  /* top row */
+  .gate-photo.p1{ top: 3%;  left: 2%;  width: 150px; transform: rotate(-9deg); }
+  .gate-photo.p2{ top: 5%;  left: 25%; width: 118px; transform: rotate(6deg); }
+  .gate-photo.p3{ top: 4%;  right: 24%; width: 118px; transform: rotate(-5deg); }
+  .gate-photo.p4{ top: 3%;  right: 2%;  width: 150px; transform: rotate(8deg); }
+  /* middle edges */
+  .gate-photo.p5{ top: 44%; left: 1%;  width: 108px; transform: rotate(-4deg); }
+  .gate-photo.p6{ top: 44%; right: 1%; width: 108px; transform: rotate(5deg); }
+  /* bottom row */
+  .gate-photo.p7{ bottom: 5%; left: 3%;  width: 150px; transform: rotate(6deg); }
+  .gate-photo.p8{ bottom: 4%; left: 26%; width: 118px; transform: rotate(-5deg); }
+  .gate-photo.p9{ bottom: 5%; right: 25%; width: 118px; transform: rotate(4deg); }
+  .gate-photo.p10{ bottom: 4%; right: 3%; width: 150px; transform: rotate(-7deg); }
+  @media (max-width: 760px){
+    .gate-photo{ padding: 6px 6px 16px; }
+    .gate-photo.p1{ width: 105px; top: 2%; left: 2%; }
+    .gate-photo.p4{ width: 105px; top: 2%; right: 2%; }
+    .gate-photo.p7{ width: 105px; bottom: 3%; left: 2%; }
+    .gate-photo.p10{ width: 105px; bottom: 3%; right: 2%; }
+    .gate-photo.p2, .gate-photo.p3, .gate-photo.p5, .gate-photo.p6, .gate-photo.p8, .gate-photo.p9{
+      display: none;
+    }
+  }
+
+  /* ---- Countdown ---- */
+  #countdown-wrap{
+    max-width: 480px;
+    margin: 10px auto 30px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .countdown-label{
+    font-family: 'Homemade Apple', cursive;
+    color: var(--gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .countdown{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 16px 12px;
+    box-shadow: 0 8px 20px rgba(120,60,70,0.16);
+  }
+  .countdown .unit{
+    flex: 1;
+    min-width: 0;
+  }
+  .countdown .num{
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--rose);
+    line-height: 1.1;
+  }
+  .countdown .unit-label{
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+
+  /* ---- Our Stats ---- */
+  .stats-wrap{
+    max-width: 480px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .stat-card{
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 26px 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(120,60,70,0.16);
+    border: 1px solid var(--pink-light);
+  }
+  .stat-number{
+    font-family: 'Caveat', cursive;
+    font-size: 3.4rem;
+    color: var(--rose);
+    line-height: 1;
+  }
+  .stat-label{
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text);
+    opacity: 0.65;
+    margin-top: 4px;
+  }
+
+  /* ---- Scroll-in animation for timeline cards ---- */
+  .item{
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .item.in-view{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---- Photo lightbox ---- */
+  .lightbox-img{ cursor: zoom-in; }
+  .lightbox{
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20,10,15,0.88);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 24px;
+  }
+  .lightbox.active{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox img{
+    max-width: 90vw;
+    max-height: 90vh;
+    border: 8px solid #fff;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    cursor: zoom-out;
+  }
+
+  /* ---- Hidden love letter ---- */
+  .secret-heart{
+    display: inline-block;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .secret-heart:hover{
+    opacity: 0.9;
+    transform: scale(1.15);
+  }
+  .love-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    padding: 20px;
+  }
+  .love-modal.active{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .love-modal-backdrop{
+    position: absolute;
+    inset: 0;
+    background: rgba(20,10,15,0.75);
+  }
+  .love-card{
+    position: relative;
+    background: var(--paper);
+    max-width: 480px;
+    width: 100%;
+    padding: 38px 30px 30px;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    transform: rotate(-0.5deg);
+    z-index: 1;
+  }
+  .love-card::before{
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: 40px;
+    width: 80px;
+    height: 24px;
+    background: var(--pink);
+    opacity: 0.7;
+    transform: rotate(-5deg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .love-title{
+    font-family: 'Caveat', cursive;
+    font-size: 2.2rem;
+    color: var(--rose);
+    margin: 0 0 14px;
+    text-align: center;
+  }
+  .love-text{
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre-line;
+    font-size: 0.98rem;
+  }
+  .love-close{
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--rose);
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .love-close:hover{ opacity: 1; }
+
+  /* ---- Music toggle ---- */
+  #music-toggle{
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    z-index: 500;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--pink);
+    background: var(--paper);
+    color: var(--rose);
+    font-size: 1.15rem;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(201,24,74,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---- Personalised loading screen ---- */
+  #loading-screen{
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,194,209,0.35), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(212,166,89,0.15), transparent 40%),
+      linear-gradient(180deg, #fff3f7 0%, #fdf6ee 35%, #fff3f7 100%);
+    transition: opacity 0.6s ease;
+  }
+  #loading-screen.gate-hidden{
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loading-inner{
+    text-align: center;
+  }
+  .loading-heart{
+    font-size: 3rem;
+    animation: pulseHeart 1.2s ease-in-out infinite;
+  }
+  @keyframes pulseHeart{
+    0%, 100%{ transform: scale(1); opacity: 0.8; }
+    50%{ transform: scale(1.22); opacity: 1; }
+  }
+  .loading-text{
+    margin-top: 16px;
+    font-family: 'Homemade Apple', cursive;
+    font-size: 1.3rem;
+    color: var(--rose);
+    letter-spacing: 0.03em;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-inner">
+    <div class="loading-heart">💗</div>
+    <div class="loading-text">loading our story...</div>
+  </div>
+</div>
+
+<div id="pwgate">
+  <div class="pwgate-inner">
+    <div class="pwgate-lock">🔒</div>
+    <h1 class="pwgate-title">This one's locked</h1>
+    <form id="pwgate-form" class="pwgate-form">
+      <input type="password" id="pwgate-input" class="pwgate-input" placeholder="enter the password" autocomplete="off" />
+      <button type="submit" class="pwgate-submit">Unlock</button>
+    </form>
+    <div id="pwgate-error" class="pwgate-error"></div>
+  </div>
+</div>
+
+<div id="gate">
+  <div class="gate-scatter">
+    <div class="gate-photo p1"><img src="gate-photo-1.jpg" alt=""></div>
+    <div class="gate-photo p2"><img src="gate-photo-2.jpg" alt=""></div>
+    <div class="gate-photo p3"><img src="gate-photo-3.jpg" alt=""></div>
+    <div class="gate-photo p4"><img src="gate-photo-4.jpg" alt=""></div>
+    <div class="gate-photo p5"><img src="gate-photo-5.jpg" alt=""></div>
+    <div class="gate-photo p6"><img src="gate-photo-6.jpg" alt=""></div>
+    <div class="gate-photo p7"><img src="gate-photo-7.jpg" alt=""></div>
+    <div class="gate-photo p8"><img src="gate-photo-8.jpg" alt=""></div>
+    <div class="gate-photo p9"><img src="gate-photo-9.jpg" alt=""></div>
+    <div class="gate-photo p10"><img src="gate-photo-10.jpg" alt=""></div>
+  </div>
+  <div class="gate-inner">
+    <h1 class="gate-question">Is your bf cool asf?</h1>
+    <div class="gate-buttons">
+      <button id="gate-yes" class="gate-btn yes">Yes</button>
+      <button id="gate-no" class="gate-btn no">No</button>
+    </div>
+    <div class="gate-hint">(there's only one right answer)</div>
+  </div>
+</div>
+
+<header>
+  <div class="hearts">
+    <span style="left:8%; animation-delay:0s;">💗</span>
+    <span style="left:22%; animation-delay:2.2s;">💕</span>
+    <span style="left:40%; animation-delay:4.1s;">💖</span>
+    <span style="left:58%; animation-delay:1.3s;">💓</span>
+    <span style="left:74%; animation-delay:3.4s;">💗</span>
+    <span style="left:90%; animation-delay:5.2s;">💞</span>
+  </div>
+  <div class="kicker">four months of us</div>
+  <h1>Our Firsts</h1>
+  <p>every "first" we've had, mapped and remembered</p>
+  <div class="divider"></div>
+</header>
+
+<div id="countdown-wrap">
+  <div class="countdown-label">together for</div>
+  <div class="countdown" id="countdown">
+    <div class="unit"><div class="num" id="cd-days">0</div><div class="unit-label">days</div></div>
+    <div class="unit"><div class="num" id="cd-hours">0</div><div class="unit-label">hours</div></div>
+    <div class="unit"><div class="num" id="cd-mins">0</div><div class="unit-label">mins</div></div>
+    <div class="unit"><div class="num" id="cd-secs">0</div><div class="unit-label">secs</div></div>
+  </div>
+</div>
+
+<div id="map-wrap">
+  <div id="map-caption">tap a memory below to find it on the map ↴</div>
+  <div id="map"></div>
+</div>
+
+<div class="section-title">the timeline</div>
+
+<div class="timeline" id="timeline">
+  <!-- Items injected by JS from the data below -->
+</div>
+
+<div class="section-title">our stats</div>
+<div class="stats-wrap">
+  <div class="stat-card">
+    <div class="stat-number" id="stat-places">0</div>
+    <div class="stat-label">places we've been together</div>
+  </div>
+</div>
+
+<footer>
+  here's to many, many more firsts 🥂
+  <span class="secret-heart" id="secret-heart" title="">💌</span>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="love-modal" id="love-modal">
+  <div class="love-modal-backdrop" id="love-modal-backdrop"></div>
+  <div class="love-card">
+    <button class="love-close" id="love-close" aria-label="close">×</button>
+    <h2 class="love-title">a little something</h2>
+    <p class="love-text" id="love-text">[[REPLACE WITH YOUR REAL LOVE LETTER]]
+
+My Mischiboop,
+
+Four months in and I still can't believe you said "sure." I'd write it all out here — every reason, every little thing — but for now just know that finding you was the best thing that's happened to me all year. Here's to every first still ahead of us.
+
+Yours always.</p>
+  </div>
+</div>
+
+<!-- Background music — replace "song.mp3" with your actual song file -->
+<audio id="bg-music" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+<button id="music-toggle" aria-label="mute music">🔊</button>
+
+<script>
+  // ---------------------------------------------------------
+  // EDIT ME: fill in your real dates, places, photos, and stories.
+  // lat/lng are placeholders (NYC area, spaced out) — replace with
+  // real coordinates. Easiest way: right-click a spot on Google Maps
+  // and copy the numbers it shows you.
+  //
+  // "photoEmoji" is a stand-in for a real photo. To use an actual
+  // photo instead, change the .photo-area div creation below to an
+  // <img src="your-photo.jpg"> tag.
+  // ---------------------------------------------------------
+  const firsts = [
+    {
+      emoji: "📸",
+      photoEmoji: "📸",
+      photos: ["first-photo-1.jpg"],
+      title: "First Photo Together",
+      date: "February 11, 2026",
+      place: "UNSW Village Green",
+      story: "First photo I have with our main character stolen right off Kiyara's instagram. The i'm bored and have nothing to do method might be 'patched' but the I have no where to live method is not. Who knew staying at a hostel would lead you to introducing me to Kiyara and that would lead to the most exhausting event of my life the jumpy jump jump thingy (i'm good at describing stuff trust). The whole time I was just thinking do not stack it and last longer than Mischa. I'm very glad to say that I beat the main character in this game but suffered some aura loss when Kiyara and Sophie kept trying to get me to jump over the tall pole. The day was great fun leaving Mischa with bruises from the nerf guns and me with smiles that I once again weaselled my way into Mischa's o-week experience.",
+      locations: [{ lat: -33.9182, lng: 151.2320, label: "UNSW Village Green" }],
+      placeholder: false
+    },
+    {
+      emoji: "🍝",
+      photoEmoji: "🍝",
+      photos: ["first-date-1.jpg", "first-date-2.jpg"],
+      title: "First Date",
+      date: "February 12, 2026",
+      place: "Giuls, Surry Hills",
+      story: "Replace with how the date at Giuls went — pasta, a train ride, and a Ratatouille photobooth strip to prove it happened.",
+      locations: [{ lat: -33.8890, lng: 151.2131, label: "Giuls, Surry Hills" }],
+      placeholder: true
+    },
+    {
+      emoji: "💭",
+      photoEmoji: "💭",
+      photos: ["asked-out-1.jpg", "asked-out-2.jpg"],
+      title: "Asked You Out",
+      date: "March 23, 2026",
+      place: "Totti's, Bondi",
+      story: "Asked Mischiboop to go out with me to do the Bondi to Coogee walk — she said yes, and she didn't bring another guy so you know that's a win. From there we made up fake arguments (mainly about my step sister entertaining countless people), and most importantly, Mischa said yes to being my girlfriend. Or, well, \"sure\" — but it's the same thing right? The date being the same as ur opps doesn't matter anymore cuz they broke up too.",
+      locations: [{ lat: -33.8948293, lng: 151.268861, label: "Totti's, Bondi" }],
+      placeholder: false
+    },
+    {
+      emoji: "🎆",
+      photoEmoji: "🎆",
+      photos: ["first-kiss-1.jpg", "first-kiss-2.jpg"],
+      title: "First Kiss",
+      date: "April 4, 2026",
+      place: "Darling Harbour",
+      story: "Replace with the story — kissed during the fireworks at Darling Harbour.",
+      locations: [{ lat: -33.8688, lng: 151.2010, label: "Darling Harbour" }],
+      placeholder: true
+    },
+    {
+      emoji: "🌙",
+      photoEmoji: "1️⃣",
+      photos: ["one-month-1.jpg", "one-month-2.jpg", "one-month-3.jpg"],
+      title: "1 Month",
+      date: "April 23, 2026",
+      place: "Sydney Tower Eye & Green Point Reserve",
+      story: "Replace with how the first month felt and what you did to mark it.",
+      locations: [
+        { lat: -33.8701, lng: 151.2087, label: "Sydney Tower Eye" },
+        { lat: -33.8434, lng: 151.2797, label: "Green Point Reserve" }
+      ],
+      placeholder: true
+    },
+    {
+      emoji: "🌸",
+      photoEmoji: "🌸",
+      photos: ["two-months-1.jpg"],
+      title: "2 Months",
+      date: "May 23, 2026",
+      place: "Melbourne & Jakarta",
+      story: "Replace with a favorite memory from month two — spent apart, one of you in Melbourne and one in Jakarta.",
+      locations: [
+        { lat: -37.8136, lng: 144.9631, label: "Melbourne" },
+        { lat: -6.2088, lng: 106.8456, label: "Jakarta" }
+      ],
+      placeholder: true
+    },
+    {
+      emoji: "⛳",
+      photoEmoji: "⛳",
+      photos: ["three-months-1.jpg", "three-months-2.jpg", "three-months-3.jpg"],
+      title: "3 Months",
+      date: "June 23, 2026",
+      place: "Epicurean, Crown Sydney",
+      story: "Replace with a favorite memory from month three — buffet at Epicurean, then mini golf.",
+      locations: [{ lat: -33.8611, lng: 151.1998, label: "Epicurean, Crown Sydney" }],
+      placeholder: true
+    },
+    {
+      emoji: "🎉",
+      photoEmoji: "🥂",
+      title: "4 Months",
+      date: "July 23, 2026",
+      place: "UniLodge Kensington",
+      story: "And here we are — four months in. Here's to celebrating tonight!",
+      locations: [{ lat: -33.9143, lng: 151.2257, label: "UniLodge Kensington" }],
+      placeholder: true
+    }
+  ];
+
+  // ---- Render timeline ----
+  const timelineEl = document.getElementById('timeline');
+  const items = [];
+  firsts.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.setAttribute('data-emoji', f.emoji);
+    div.setAttribute('data-index', i);
+    let polaroidHtml;
+    if (f.photos && f.photos.length > 1){
+      polaroidHtml = `<div class="polaroid-group">` +
+        f.photos.map(p => `
+          <div class="polaroid small">
+            <div class="photo-area"><img class="lightbox-img" src="${p}" alt="${f.title}"></div>
+          </div>`).join('') +
+        `</div><div class="caption group-caption">${f.title}</div>`;
+    } else if (f.photos && f.photos.length === 1){
+      polaroidHtml = `
+        <div class="polaroid">
+          <div class="photo-area"><img class="lightbox-img" src="${f.photos[0]}" alt="${f.title}"></div>
+          <div class="caption">${f.title}</div>
+        </div>`;
+    } else {
+      polaroidHtml = `
+        <div class="polaroid">
+          <div class="photo-area">${f.photoEmoji}</div>
+          <div class="caption">${f.title}</div>
+        </div>`;
+    }
+    div.innerHTML = `
+      <div class="card">
+        ${polaroidHtml}
+        <h2>${f.title}</h2>
+        <div class="date">${f.date}</div>
+        <div class="place">📍 ${f.place}</div>
+        <p class="story">${f.story}</p>
+        <button class="see-on-map" data-index="${i}">🗺️ see on map</button>
+        ${f.placeholder ? '<span class="placeholder-tag">✏️ edit this one</span>' : ''}
+      </div>
+    `;
+    timelineEl.appendChild(div);
+    items.push(div);
+  });
+
+  // ---- Our Stats: count unique locations across every milestone ----
+  const uniquePlaceLabels = new Set();
+  firsts.forEach(f => f.locations.forEach(loc => uniquePlaceLabels.add(loc.label)));
+  document.getElementById('stat-places').textContent = uniquePlaceLabels.size;
+
+  // ---- Photo lightbox: click any timeline photo to view it full-screen ----
+  (function(){
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.lightbox-img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  })();
+
+  // ---- Scroll-in animation for timeline cards, staggered ----
+  (function(){
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting){
+          const idx = parseInt(entry.target.dataset.index) || 0;
+          entry.target.style.transitionDelay = (idx % 4) * 0.12 + 's';
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(el => observer.observe(el));
+  })();
+
+  // ---- Render map ----
+  const firstLoc = firsts[0].locations[0];
+  const map = L.map('map', { scrollWheelZoom: false }).setView([firstLoc.lat, firstLoc.lng], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 19
+  }).addTo(map);
+
+  function heartIcon(active, symbol){
+    const sym = symbol || '💗';
+    return L.divIcon({
+      className: 'heart-marker',
+      html: `<div style="font-size:${active ? 32 : 26}px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3)); transition: font-size 0.2s;">${sym}</div>`,
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+  }
+
+  // markersByItem[i] = array of Leaflet markers belonging to firsts[i]
+  // (usually 1, but items like "2 Months" can have several, e.g. Melbourne + Jakarta)
+  // Each item's marker uses its own emoji (f.emoji) as the pin icon, so
+  // things like the fireworks kiss show 🎆 on the map instead of a plain heart.
+  const allBounds = [];
+  const markersByItem = firsts.map((f, i) => {
+    return f.locations.map(loc => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: heartIcon(false, f.emoji) }).addTo(map);
+      marker.bindPopup(`<b>${f.title}</b><br>${f.date}<br>${loc.label}`);
+      marker.on('click', () => focusOn(i, false));
+      allBounds.push([loc.lat, loc.lng]);
+      return marker;
+    });
+  });
+
+  // Connect each item's primary (first) location in chronological order
+  const path = firsts.map(f => [f.locations[0].lat, f.locations[0].lng]);
+  L.polyline(path, { color: '#d4a659', weight: 2, opacity: 0.6, dashArray: '6 8' }).addTo(map);
+  map.fitBounds(allBounds, { padding: [40, 40] });
+
+  function focusOn(i, scroll){
+    const locs = firsts[i].locations;
+    if (locs.length > 1){
+      map.flyToBounds(locs.map(l => [l.lat, l.lng]), { padding: [60, 60], duration: 0.8 });
+    } else {
+      map.flyTo([locs[0].lat, locs[0].lng], 14, { duration: 0.8 });
+    }
+    markersByItem[i].forEach(m => m.openPopup());
+    markersByItem.forEach((ms, idx) => ms.forEach(m => m.setIcon(heartIcon(idx === i, firsts[idx].emoji))));
+    items.forEach((el, idx) => el.classList.toggle('active', idx === i));
+    if (scroll){
+      document.getElementById('map-wrap').scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+  }
+
+  // Buttons + card click both trigger focus
+  document.querySelectorAll('.see-on-map').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      focusOn(parseInt(btn.dataset.index), true);
+    });
+  });
+  items.forEach((el, i) => {
+    el.addEventListener('click', () => focusOn(i, true));
+  });
+
+  // ---- Password gate (shown before everything else) ----
+  (function(){
+    const pwgate = document.getElementById('pwgate');
+    const form = document.getElementById('pwgate-form');
+    const input = document.getElementById('pwgate-input');
+    const error = document.getElementById('pwgate-error');
+    const correctPassword = 'mischiboop';
+
+    document.body.style.overflow = 'hidden';
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = input.value.trim().toLowerCase();
+      if (value === correctPassword){
+        pwgate.classList.add('gate-hidden');
+        setTimeout(() => { pwgate.style.display = 'none'; }, 500);
+        // Start the background music right on this click (a real user
+        // gesture), so browsers allow the autoplay.
+        startMusic();
+      } else {
+        error.textContent = "nope, try again 💔";
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
+        input.value = '';
+        input.focus();
+      }
+    });
+  })();
+
+  // ---- Gate / splash screen ----
+  (function(){
+    const gate = document.getElementById('gate');
+    const zone = document.querySelector('.gate-buttons');
+    const yesBtn = document.getElementById('gate-yes');
+    const noBtn = document.getElementById('gate-no');
+    let gateActive = true;
+
+    document.body.style.overflow = 'hidden';
+
+    function dodge(){
+      const zoneRect = zone.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+      const maxLeft = Math.max(zoneRect.width - btnRect.width, 0);
+      const maxTop = Math.max(zoneRect.height - btnRect.height, 0);
+      const newLeft = Math.random() * maxLeft;
+      const newTop = Math.random() * maxTop;
+      noBtn.style.left = newLeft + 'px';
+      noBtn.style.top = newTop + 'px';
+    }
+
+    function isNear(x, y){
+      const rect = noBtn.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dist = Math.hypot(x - cx, y - cy);
+      return dist < 100;
+    }
+
+    function handlePointer(e){
+      if (!gateActive) return;
+      const point = e.touches ? e.touches[0] : e;
+      if (isNear(point.clientX, point.clientY)){
+        dodge();
+      }
+    }
+
+    document.addEventListener('mousemove', handlePointer);
+    document.addEventListener('touchmove', handlePointer, { passive: true });
+    // On touch devices there's no hover before a tap, so also dodge on
+    // touchstart / any attempt to press it directly.
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); });
+    noBtn.addEventListener('mouseenter', dodge);
+    noBtn.addEventListener('click', (e) => { e.preventDefault(); dodge(); });
+
+    window.addEventListener('resize', () => {
+      if (gateActive) dodge();
+    });
+
+    yesBtn.addEventListener('click', () => {
+      gateActive = false;
+      fireConfetti();
+      gate.classList.add('gate-hidden');
+      document.body.style.overflow = '';
+      setTimeout(() => { gate.style.display = 'none'; }, 500);
+    });
+  })();
+
+  // ---- Confetti burst on "Yes" ----
+  function fireConfetti(){
+    if (typeof confetti !== 'function') return;
+    const palette = ['#c9184a', '#ff8fab', '#ffc2d1', '#d4a659', '#fff0f5'];
+    confetti({
+      particleCount: 120,
+      spread: 80,
+      startVelocity: 45,
+      origin: { y: 0.6 },
+      colors: palette
+    });
+    confetti({
+      particleCount: 60,
+      angle: 60,
+      spread: 60,
+      origin: { x: 0, y: 0.7 },
+      colors: palette
+    });
+    confetti({
+      particleCount: 60,
+      angle: 120,
+      spread: 60,
+      origin: { x: 1, y: 0.7 },
+      colors: palette
+    });
+  }
+
+  // ---- Countdown: how long they've been together ----
+  // EDIT ME: change this to your real start date.
+  (function(){
+    const startDate = new Date('2026-03-23T00:00:00');
+    const daysEl = document.getElementById('cd-days');
+    const hoursEl = document.getElementById('cd-hours');
+    const minsEl = document.getElementById('cd-mins');
+    const secsEl = document.getElementById('cd-secs');
+
+    function tick(){
+      const now = new Date();
+      let diff = Math.max(now - startDate, 0);
+      const days = Math.floor(diff / 86400000); diff -= days * 86400000;
+      const hours = Math.floor(diff / 3600000); diff -= hours * 3600000;
+      const mins = Math.floor(diff / 60000); diff -= mins * 60000;
+      const secs = Math.floor(diff / 1000);
+      daysEl.textContent = days;
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minsEl.textContent = String(mins).padStart(2, '0');
+      secsEl.textContent = String(secs).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // ---- Background music ----
+  // EDIT ME: replace "song.mp3" (in the <audio> tag above) with your own song file.
+  const bgMusic = document.getElementById('bg-music');
+  const musicToggle = document.getElementById('music-toggle');
+  let musicMuted = false;
+
+  function startMusic(){
+    bgMusic.volume = 0.5;
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined){
+      playPromise.catch(() => {
+        // Autoplay was blocked — user can still hit the music button to start it.
+      });
+    }
+  }
+
+  musicToggle.addEventListener('click', () => {
+    musicMuted = !musicMuted;
+    bgMusic.muted = musicMuted;
+    if (!musicMuted && bgMusic.paused){
+      startMusic();
+    }
+    musicToggle.textContent = musicMuted ? '🔇' : '🔊';
+  });
+
+  // ---- Hidden love letter ----
+  (function(){
+    const heart = document.getElementById('secret-heart');
+    const modal = document.getElementById('love-modal');
+    const backdrop = document.getElementById('love-modal-backdrop');
+    const closeBtn = document.getElementById('love-close');
+
+    heart.addEventListener('click', () => modal.classList.add('active'));
+    backdrop.addEventListener('click', () => modal.classList.remove('active'));
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+  })();
+
+  // ---- Personalised loading screen ----
+  // Shown immediately, fades out once everything (images, fonts, map tiles
+  // requested so far, etc.) has finished loading. A small minimum delay
+  // keeps the pulse animation from just flashing on fast connections.
+  (function(){
+    const loader = document.getElementById('loading-screen');
+    const shownAt = Date.now();
+    const minDisplay = 700;
+
+    function hideLoader(){
+      const elapsed = Date.now() - shownAt;
+      const wait = Math.max(minDisplay - elapsed, 0);
+      setTimeout(() => {
+        loader.classList.add('gate-hidden');
+        setTimeout(() => { loader.style.display = 'none'; }, 600);
+      }, wait);
+    }
+
+    if (document.readyState === 'complete'){
+      hideLoader();
+    } else {
+      window.addEventListener('load', hideLoader);
+    }
+  })();
+</script>
+
+</body>
+</html>
