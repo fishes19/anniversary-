@@ -267,6 +267,27 @@
   }
   .polaroid-group .polaroid.small:nth-child(odd){ transform: rotate(-4deg); }
   .polaroid-group .polaroid.small:nth-child(even){ transform: rotate(4deg); }
+
+  /* video polaroids: the box reshapes itself to match the video once it loads
+     (see the "Videos" block in the script); 3/4 is just the pre-load default */
+  .polaroid.video{
+    width: 100%;
+    max-width: 220px;
+  }
+  .polaroid.video .photo-area{
+    aspect-ratio: 3 / 4;
+    background: #000;
+  }
+  .polaroid.video video{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: #000;
+  }
+  .polaroid-group .polaroid.video{ margin: 0; }
+  .polaroid-group .polaroid.video:nth-child(odd){ transform: rotate(-3deg); }
+  .polaroid-group .polaroid.video:nth-child(even){ transform: rotate(3deg); }
   .group-caption{
     font-family:'Homemade Apple', cursive;
     text-align:center;
@@ -1022,25 +1043,24 @@ I love you Mischiboop. Happy anniversary.</p>
     {
       emoji: "💫",
       photoEmoji: "6️⃣",
-      photos: [], // add e.g. ["six-months-1.jpg"] once you have photos
+      photos: ["six-months-1.jpg", "six-months-2.jpg"],
       title: "6 Months",
       date: "September 23, 2026",
-      place: "EDIT ME: where you went",
+      place: "Randwick",
       story: "EDIT ME: what happened on your 6 month anniversary 💕",
-      // placeholder pin (Sydney CBD) - swap for the real coordinates + label
-      locations: [{ lat: -33.8650, lng: 151.2000, label: "EDIT ME: 6 months spot" }],
+      // suburb-level pin on purpose (this repo is public)
+      locations: [{ lat: -33.9130, lng: 151.2393, label: "Randwick" }],
       placeholder: true
     },
     {
       emoji: "🌷",
       photoEmoji: "7️⃣",
-      photos: [], // add e.g. ["seven-months-1.jpg"] once you have photos
+      photos: ["seven-months-1.mp4", "seven-months-2.mp4"],
       title: "7 Months",
       date: "October 23, 2026",
-      place: "EDIT ME: where you went",
+      place: "Royal Pines Golf Course, Gold Coast",
       story: "EDIT ME: what happened on your 7 month anniversary 💕",
-      // placeholder pin (Sydney CBD) - swap for the real coordinates + label
-      locations: [{ lat: -33.8690, lng: 151.2150, label: "EDIT ME: 7 months spot" }],
+      locations: [{ lat: -28.0045, lng: 153.3765, label: "Royal Pines Golf Course, Gold Coast" }],
       placeholder: true
     },
     {
@@ -1058,6 +1078,9 @@ I love you Mischiboop. Happy anniversary.</p>
   ];
 
   // ---- Render timeline ----
+  // In a "photos" list, anything ending in .mp4/.mov/.webm/.m4v is shown as a
+  // video; everything else is shown as a photo. You can mix them.
+  const isVideo = (p) => /\.(mp4|mov|webm|m4v)([?#]|$)/i.test(p);
   const timelineEl = document.getElementById('timeline');
   const items = [];
   firsts.forEach((f, i) => {
@@ -1068,11 +1091,20 @@ I love you Mischiboop. Happy anniversary.</p>
     let polaroidHtml;
     if (f.photos && f.photos.length > 1){
       polaroidHtml = `<div class="polaroid-group">` +
-        f.photos.map(p => `
+        f.photos.map(p => isVideo(p) ? `
+          <div class="polaroid video">
+            <div class="photo-area"><video src="${p}#t=0.1" controls playsinline preload="metadata"></video></div>
+          </div>` : `
           <div class="polaroid small">
             <div class="photo-area"><img class="lightbox-img" src="${p}" alt="${f.title}"></div>
           </div>`).join('') +
         `</div><div class="caption group-caption">${f.title}</div>`;
+    } else if (f.photos && f.photos.length === 1 && isVideo(f.photos[0])){
+      polaroidHtml = `
+        <div class="polaroid video">
+          <div class="photo-area"><video src="${f.photos[0]}#t=0.1" controls playsinline preload="metadata"></video></div>
+          <div class="caption">${f.title}</div>
+        </div>`;
     } else if (f.photos && f.photos.length === 1){
       polaroidHtml = `
         <div class="polaroid">
@@ -1115,6 +1147,24 @@ I love you Mischiboop. Happy anniversary.</p>
     });
     lightbox.addEventListener('click', () => {
       lightbox.classList.remove('active');
+    });
+  })();
+
+  // ---- Videos ----
+  // Tapping a video's controls shouldn't count as tapping the card (which would
+  // jump to the map); only one video plays at a time; and the polaroid box takes
+  // the video's real shape once its size is known (portrait vs landscape).
+  (function(){
+    const videos = document.querySelectorAll('.polaroid video');
+    videos.forEach(v => {
+      v.addEventListener('click', (e) => e.stopPropagation());
+      v.addEventListener('play', () => videos.forEach(o => { if (o !== v) o.pause(); }));
+      const fit = () => {
+        if (v.videoWidth && v.videoHeight){
+          v.parentElement.style.aspectRatio = v.videoWidth + ' / ' + v.videoHeight;
+        }
+      };
+      if (v.readyState >= 1) fit(); else v.addEventListener('loadedmetadata', fit);
     });
   })();
 
